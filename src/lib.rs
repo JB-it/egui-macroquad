@@ -78,7 +78,8 @@ impl Egui {
         let gl = unsafe { get_internal_gl() };
         macroquad::input::utils::repeat_all_miniquad_input(self, self.1);
 
-        self.0.run(gl.quad_context, f);
+        //self.0.run(gl.quad_context, f);
+        self.0.run(gl.quad_context, |graphic_context, context| f(graphic_context, context));
     }
 
     fn draw(&mut self) {
@@ -96,7 +97,8 @@ pub fn ui<F: FnOnce(&egui::Context)>(f: F) {
 
 /// Configure egui without beginning or ending a frame.
 pub fn cfg<F: FnOnce(&egui::Context)>(f: F) {
-    f(get_egui().0.egui_ctx());
+    //f(get_egui().0.egui_ctx());
+    get_egui().ui(|_, ctx| f(ctx))
 }
 
 /// Draw egui ui. Must be called after `ui` and once per frame.
